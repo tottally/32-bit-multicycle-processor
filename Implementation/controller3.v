@@ -1,13 +1,11 @@
 `timescale 1ns / 1ps
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~ CONTROLLER ~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+//CONTROLLER
 
 module controller3(opcode, clk, reset, PCWrite, PCWriteCond, DMEMWrite, IRWrite,
 						 MemtoReg, PCSource, ALUSel, ALUSrcA, ALUSrcB, RegWrite, RegReadSel);
 
-// ~~~~~~~~~~~~~~~~~~~ PORTS ~~~~~~~~~~~~~~~~~~~ //
+//PORTS
 
 // opcode, clock, and reset inputs
 input [5:0] opcode;	// from instruction register
@@ -18,12 +16,12 @@ output reg	PCWrite, PCWriteCond, DMEMWrite, IRWrite, ALUSrcA, RegWrite, RegReadS
 output reg [1:0] MemtoReg, PCSource, ALUSrcB;
 output reg [3:0] ALUSel;
 
-// ~~~~~~~~~~~~~~~~~~~ REGISTER ~~~~~~~~~~~~~~~~~~~ //
+//REGISTER
 
 // 4-bit state register
 reg [3:0]	state;
 
-// ~~~~~~~~~~~~~~~~~~~ PARAMETERS ~~~~~~~~~~~~~~~~~~~ //
+//PARAMETERS
 
 // state parameters
 parameter s0 = 4'd0;
@@ -60,7 +58,7 @@ parameter LUI	= 4'b1010;
 parameter LWI	= 4'b1011;
 parameter SWI	= 4'b1100;
 
-// ~~~~~~~~~~~~~~~~~~~ STATE MACHINE ~~~~~~~~~~~~~~~~~~~ //
+//STATE MACHINE
 
 // control state machine
 always @(posedge clk) begin

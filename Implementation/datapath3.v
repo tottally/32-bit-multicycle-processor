@@ -1,13 +1,11 @@
 `timescale 1ns / 1ps
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~ DATAPATH ~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+//DATAPATH
 
 module datapath3(clk, reset, PCWrite, PCWriteCond, IRWrite, DMEMWrite, RegWrite, ALUSrcA, RegReadSel,
 					  MemtoReg, ALUSrcB, PCSource, ALUSel, opcode);
 
-// ~~~~~~~~~~~~~~~~~~~ PORTS ~~~~~~~~~~~~~~~~~~~ //
+//PORTS
 
 input PCWrite, PCWriteCond, IRWrite, DMEMWrite, RegWrite, ALUSrcA, RegReadSel /* 0 for R3, 1 for R1*/;
 input [1:0] MemtoReg, ALUSrcB, PCSource;
@@ -15,11 +13,11 @@ input [3:0] ALUSel;
 input clk, reset;
 output [5:0] opcode;
 
-// ~~~~~~~~~~~~~~~~~~~ PARAMETERS ~~~~~~~~~~~~~~~~~~~ //
+//PARAMS
 
 parameter word_size = 32;
 
-// ~~~~~~~~~~~~~~~~~~~ WIRES ~~~~~~~~~~~~~~~~~~~ //
+//WIRES
 
 // PC
 wire [word_size-1:0] PCin;
@@ -60,20 +58,20 @@ wire zero;
 // ALUOut
 wire [word_size-1:0] ALUOut_wire;
 
-// ~~~~~~~~~~~~~~~~~~~ PC WRITE SIGNAL ~~~~~~~~~~~~~~~~~~~ //
+//PC WRITE SIGNAL
 
 wire	w1;
 and	and1(w1, PCWriteCond, zero);
 or		or1(PCWrite_datapath, w1, PCWrite);
 
-// ~~~~~~~~~~~~~~~~~~~ ASSIGNMENTS ~~~~~~~~~~~~~~~~~~~ //
+//ASSIGNMENTS
 
 assign opcode = IRout[31:26];
 assign immediate = IRout[15:0];
 assign write_address = IRout[25:21]; // R1
 assign read_sel_1 = IRout[20:16]; // R2
 
-// ~~~~~~~~~~~~~~~~~~~ MEMORY ~~~~~~~~~~~~~~~~~~~ //
+//MEMORY
 
 // INSTRUCTION MEM
 IMem	IM(PCout, IMout);
@@ -90,7 +88,7 @@ nbit_register_file		RF(write_data,
                           read_sel_1, read_sel_2,
                           write_address, RegWrite, clk);
 
-// ~~~~~~~~~~~~~~~~~~~ INTERNAL REGISTERS ~~~~~~~~~~~~~~~~~~~ //
+//INTERNAL REGISTERS
 
 // PC
 holding_reg	PC(PCout, PCin, PCWrite_datapath, clk, reset);
@@ -105,13 +103,13 @@ holding_reg B(Bout, read_data_2, 1'b1, clk, reset);
 // ALUOut Register
 holding_reg	ALUOut(ALUOut_wire, ALU_wire, 1'b1, clk, reset);
 
-// ~~~~~~~~~~~~~~~~~~~ EXTENDERS ~~~~~~~~~~~~~~~~~~~ //
+//EXTENDERS
 
 // ZE(imm) and SE(imm)
 zero_extend	ZE(immediate, immZE);
 sign_extend SE(immediate, immSE);
 
-// ~~~~~~~~~~~~~~~~~~~ MULTIPLEXERS ~~~~~~~~~~~~~~~~~~~ //
+//MUXES
 
 // Reg File inputs
 read_mux	read_sel_mux(read_sel_2, IRout[15:11], IRout[25:21], RegReadSel); //B is R3 or R1
@@ -124,12 +122,12 @@ mux_2bit ALUSrcB_mux(sourceB, Bout, 32'd1, immSE, immZE, ALUSrcB);
 //PC source mux
 mux_2bit	PC_mux(PCin, ALU_wire, ALUOut_wire, jump_target, 32'h00000000, PCSource);
 
-// ~~~~~~~~~~~~~~~~~~~ JUMP ALU ~~~~~~~~~~~~~~~~~~~ //
+//JUMP ALU
 
 //jump_target, inputPC, offset
 jumpALU	jALU(jump_target, PCout, immSE);
 
-// ~~~~~~~~~~~~~~~~~~~ MAIN ALU ~~~~~~~~~~~~~~~~~~~ //
+//MAIN ALU
 
 // ALU
 myALU	mainALU(ALU_wire, zero, sourceA, sourceB, ALUSel);
