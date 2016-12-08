@@ -1,32 +1,26 @@
 `timescale 1ns / 1ps
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~~~~ CPU ~~~~~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+//CPU
 
 module MultiCycleCPU(clk, reset);
 
-// ~~~~~~~~~~~~~~~~~~~~~ INPUTS ~~~~~~~~~~~~~~~~~~~~~~ //
+//INPUTS
 
 input clk, reset;
 
-// ~~~~~~~~~~~~~~~~~~~~~ WIRES ~~~~~~~~~~~~~~~~~~~~~~~ //
+//WIRES
 
 wire PCWrite, PCWriteCond, IRWrite, DMEMWrite, RegWrite, ALUSrcA, RegReadSel;
 wire [1:0] MemtoReg, ALUSrcB, PCSource;
 wire [3:0] ALUSel;
 wire [5:0] opcode;
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~~ DATAPATH ~~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+//DATAPATH
 
 datapath3		cpu_datapath(clk, reset, PCWrite, PCWriteCond, IRWrite, DMEMWrite, RegWrite, ALUSrcA, RegReadSel,
 									 MemtoReg, ALUSrcB, PCSource, ALUSel, opcode);
 
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~ CONTROLLER ~~~~~~~~~~~~~~~~~~~ //
-// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ //
+//CONTROLLER
 
 controller3		cpu_controller(opcode, clk, reset, PCWrite, PCWriteCond, DMEMWrite, IRWrite,
 										MemtoReg, PCSource, ALUSel, ALUSrcA, ALUSrcB, RegWrite, RegReadSel);
