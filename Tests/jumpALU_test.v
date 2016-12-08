@@ -1,27 +1,5 @@
 `timescale 1ns / 1ps
 
-////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer:
-//
-// Create Date:   23:52:28 11/22/2014
-// Design Name:   jumpALU
-// Module Name:   /ad/eng/users/j/o/johnc219/EC413/MultiCycleCPU/jumpALU_test.v
-// Project Name:  MultiCycleCPU
-// Target Device:  
-// Tool versions:  
-// Description: 
-//
-// Verilog Test Fixture created by ISE for module: jumpALU
-//
-// Dependencies:
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-////////////////////////////////////////////////////////////////////////////////
-
 module jumpALU_test;
 
 	// Inputs
@@ -33,8 +11,8 @@ module jumpALU_test;
 
 	// Instantiate the Unit Under Test (UUT)
 	jumpALU uut (
-		.jump_target(jump_target), 
-		.inputPC(inputPC), 
+		.jump_target(jump_target),
+		.inputPC(inputPC),
 		.offset(offset)
 	);
 
@@ -45,14 +23,13 @@ module jumpALU_test;
 
 		// Wait 100 ns for global reset to finish
 		#100;
-        
+
 		// Add stimulus here
 		inputPC = 32'h0000000E;		// 13
 		offset = 32'h00000001;		// 1
 		#20;
-		
+
 		offset = 32'hFFFFFFFF;		// -1
 	end
-      
-endmodule
 
+endmodule
